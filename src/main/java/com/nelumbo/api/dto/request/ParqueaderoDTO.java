@@ -1,15 +1,12 @@
 package com.nelumbo.api.dto.request;
 
-import com.nelumbo.api.entity.Vehiculo;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,17 +16,11 @@ public class ParqueaderoDTO {
     private Long id;
 
     @NotNull
-    @NotBlank
+    @NotBlank(message = "Nombre requerido")
     private String nombre;
-    @NotNull
-    @NotBlank
-    private String registro;
 
-    private Boolean estado;
-    private Long CantidadVehiculos;
+    @NotNull(message = "no puede ser nulo")
+    @Min(value = 0, message = "Debe ser un número válido mayor o igual a 0")
+    private Long cantidadVehiculos;
 
-    private List<Vehiculo> vehiculos;;
-
-    private LocalDateTime fechaRegistro;
-    private LocalDateTime fechaActualizacion;
 }

@@ -2,6 +2,7 @@ package com.nelumbo.api.service;
 
 import com.nelumbo.api.dto.request.ParqueaderoDTO;
 import com.nelumbo.api.dto.request.VehiculoDTO;
+import com.nelumbo.api.entity.Parqueadero;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,7 +10,11 @@ import java.util.List;
 @Service
 public interface ParqueaderoService {
 
-    ParqueaderoDTO crearParqueaderoDto(ParqueaderoDTO parqueaderoDTO);
+    boolean crearParqueaderoDto(ParqueaderoDTO parqueaderoDTO);
+
+    boolean isEmptyParqueadero(String Registro);
+
+
     ParqueaderoDTO buscarParqueaderoPorId(Long id);
     List<ParqueaderoDTO> listaParqueaderoDtos();
     ParqueaderoDTO eliminarParqueaderoPorId(Long id);

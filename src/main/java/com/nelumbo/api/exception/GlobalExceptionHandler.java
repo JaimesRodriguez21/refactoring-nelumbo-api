@@ -1,14 +1,17 @@
 package com.nelumbo.api.exception;
 
+import jakarta.validation.UnexpectedTypeException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @ControllerAdvice
-public class GlobalExceptionHandler  extends Throwable{
+public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> MethodArgumentNotValidException(MethodArgumentNotValidException ex) {
@@ -45,4 +48,21 @@ public class GlobalExceptionHandler  extends Throwable{
         return ResponseEntity.status(409).body(new ErrorResponse(ex.getMessage()));
     }
 
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException ex) {
+        String message = "Error de argument: " + ex.getValue().toString();
+        return ResponseEntity.status(400).body(new ErrorResponse(message));
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatch(HttpMessageNotReadableException ex) {
+        String message = "Error de conversion : " + ex.getMessage();
+        return ResponseEntity.status(400).body(new ErrorResponse(message));
+    }
+
+    @ExceptionHandler(UnexpectedTypeException.class)
+    public ResponseEntity<ErrorResponse> UnexpectedTypeException(UnexpectedTypeException ex) {
+        // Customize the error response as needed.
+        return ResponseEntity.status(400).body(new ErrorResponse(ex.getMessage()));
+    }
 }

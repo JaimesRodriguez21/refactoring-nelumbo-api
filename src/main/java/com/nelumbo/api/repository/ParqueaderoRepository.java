@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface ParqueaderoRepository extends JpaRepository<Parqueadero, Long> {
 
-    Optional<Parqueadero> findByRegistro(String registro);
+    Optional<Parqueadero> findByNombre(String registro);
     Optional<Parqueadero> findBySocio(Usuario usuario);
 }

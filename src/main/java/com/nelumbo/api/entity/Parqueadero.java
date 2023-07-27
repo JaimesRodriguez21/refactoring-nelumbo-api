@@ -1,10 +1,7 @@
 package com.nelumbo.api.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -16,18 +13,15 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@Builder
 public class Parqueadero {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "nombre")
+    @Column(nullable = false, name = "nombre", unique = true)
     private String nombre;
-
-    @Column(nullable = false, name = "registro", unique = true)
-    private String registro;
-
 
     @Column(name = "estado",columnDefinition = "boolean default true")
     private Boolean estado;

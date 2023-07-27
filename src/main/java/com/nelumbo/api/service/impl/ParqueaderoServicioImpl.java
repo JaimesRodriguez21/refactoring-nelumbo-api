@@ -2,18 +2,48 @@ package com.nelumbo.api.service.impl;
 
 import com.nelumbo.api.dto.request.ParqueaderoDTO;
 import com.nelumbo.api.dto.request.VehiculoDTO;
+import com.nelumbo.api.entity.Parqueadero;
+import com.nelumbo.api.exception.RegistroDuplicadoException;
+import com.nelumbo.api.repository.ParqueaderoRepository;
 import com.nelumbo.api.service.ParqueaderoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ParqueaderoServicioImpl implements ParqueaderoService {
 
+    @Autowired
+    ParqueaderoRepository parqueaderoRepository;
 
     @Override
-    public ParqueaderoDTO crearParqueaderoDto(ParqueaderoDTO parqueaderoDTO) {
-        return null;
+    public boolean crearParqueaderoDto(ParqueaderoDTO parqueaderoDTO) {
+        if (!this.isEmptyParqueadero(parqueaderoDTO.getNombre())) {
+            Parqueadero parqueadero = Parqueadero.builder()
+                    .CantidadVehiculos(parqueaderoDTO.getCantidadVehiculos())
+                    .nombre(parqueaderoDTO.getNombre())
+                    .estado(true)
+                    .build();
+
+            parqueaderoRepository.save(parqueadero);
+            parqueaderoDTO.setId(parqueadero.getId());
+        } else {
+            throw new RegistroDuplicadoException("El parqueadero con nombre: "
+                    + parqueaderoDTO.getNombre() + " se encuentra registrado");
+
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isEmptyParqueadero(String nombre) {
+        Optional<Parqueadero> parqueadero= parqueaderoRepository.findByNombre(nombre);
+        if(parqueadero.isEmpty()){
+            return false;
+        }
+        return true;
     }
 
     @Override
