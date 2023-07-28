@@ -17,16 +17,10 @@ import java.time.LocalDateTime;
 @Setter
 public class VehiculoDTO {
     private Long id;
+
     @Length(min = 6, max = 6)
-    @NotNull
-    @NotBlank
+    @NotNull(message = "Campo requerido")
+    @NotBlank(message = "El campo no puede ser vacio")
     private String placa;
-    @NotNull
-    @NotBlank
-    private String modelo;
-    private ParqueaderoDTO parqueadero;
-    private LocalDateTime fechaIngreso;
-    private LocalDateTime fechaSalida;
-    private LocalDateTime fechaRegistro;
-    private LocalDateTime fechaActualizacion;
+
 }

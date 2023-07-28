@@ -23,18 +23,12 @@ public class Parqueadero {
     @Column(nullable = false, name = "nombre", unique = true)
     private String nombre;
 
-    @Column(name = "estado",columnDefinition = "boolean default true")
-    private Boolean estado;
-
     @Column(name = "cantidadvehiculos")
     private Long CantidadVehiculos;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="usuario_id")
     private Usuario socio;
-
-    @OneToMany(mappedBy = "parqueadero")
-    private List<Vehiculo> vehiculos;;
 
     @CreationTimestamp
     @Column(name = "fecharegistro")

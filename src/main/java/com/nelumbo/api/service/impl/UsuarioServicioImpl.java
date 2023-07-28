@@ -4,10 +4,11 @@ import com.nelumbo.api.dto.request.UsuarioDTO;
 import com.nelumbo.api.entity.Rol;
 import com.nelumbo.api.entity.Usuario;
 import com.nelumbo.api.exception.AccessDeniedException;
+import com.nelumbo.api.exception.EmailDuplicadoException;
+import com.nelumbo.api.exception.NotFoundException;
 import com.nelumbo.api.repository.UsuarioRepository;
 import com.nelumbo.api.service.RolService;
 import com.nelumbo.api.service.UsuarioService;
-import com.nelumbo.api.exception.EmailDuplicadoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -57,8 +58,9 @@ public class UsuarioServicioImpl implements UsuarioService {
     }
 
     @Override
-    public UsuarioDTO obtenerUsuarioPorId(long id) {
-        return null;
+    public Usuario obtenerUsuarioPorId(long id) {
+        return usuarioRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("El usuario con id: " + id + " no Existe"));
     }
 
     /*

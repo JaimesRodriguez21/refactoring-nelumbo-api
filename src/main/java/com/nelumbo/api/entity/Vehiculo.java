@@ -1,19 +1,18 @@
 package com.nelumbo.api.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
+@Builder
 @Entity
 public class Vehiculo {
 
@@ -22,30 +21,7 @@ public class Vehiculo {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "placa")
+    @Column(name = "placa", unique = true)
     private String placa;
-
-    @Column(name = "modelo")
-    private String modelo;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parqueadero_id")
-    private Parqueadero parqueadero;
-
-    @CreationTimestamp
-    @Column(name = "fechaingreso")
-    private LocalDateTime fechaIngreso;
-
-    @UpdateTimestamp
-    @Column(name = "fechasalida" )
-    private LocalDateTime fechaSalida;
-
-    @CreationTimestamp
-    @Column(name = "fecharegistro")
-    private LocalDateTime fechaRegistro;
-
-    @UpdateTimestamp
-    @Column(name = "fechaactualizacion" )
-    private LocalDateTime fechaActualizacion;
 
 }

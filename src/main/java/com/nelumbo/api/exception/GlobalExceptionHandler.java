@@ -65,4 +65,9 @@ public class GlobalExceptionHandler {
         // Customize the error response as needed.
         return ResponseEntity.status(400).body(new ErrorResponse(ex.getMessage()));
     }
+
+    @ExceptionHandler(BadRequest.class)
+    public ResponseEntity<ErrorResponse> babRequest(BadRequest ex) {
+        return ResponseEntity.status(400).body(new ErrorResponse(ex.getMessage()));
+    }
 }

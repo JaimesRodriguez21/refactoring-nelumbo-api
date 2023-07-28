@@ -1,6 +1,7 @@
 package com.nelumbo.api.service;
 
 import com.nelumbo.api.dto.request.ParqueaderoDTO;
+import com.nelumbo.api.dto.request.ParqueaderoSocio;
 import com.nelumbo.api.dto.request.VehiculoDTO;
 import com.nelumbo.api.entity.Parqueadero;
 import org.springframework.stereotype.Service;
@@ -10,16 +11,19 @@ import java.util.List;
 @Service
 public interface ParqueaderoService {
 
-    boolean crearParqueaderoDto(ParqueaderoDTO parqueaderoDTO);
+    boolean insertarParqueadero(ParqueaderoDTO parqueaderoDTO);
 
     boolean isEmptyParqueadero(String Registro);
 
+    Parqueadero buscarParqueaderoPorId(Long id);
 
-    ParqueaderoDTO buscarParqueaderoPorId(Long id);
+    boolean asociarParqueaderoConSocio(ParqueaderoSocio parqueaderoSocioRequest);
+
+    void actualizarParqueadero(Long id ,ParqueaderoDTO parqueaderoDTO);
+
     List<ParqueaderoDTO> listaParqueaderoDtos();
-    ParqueaderoDTO eliminarParqueaderoPorId(Long id);
 
-    ParqueaderoDTO asociarParqueaderoConSocio(Long idUsuario, Long idParqueadero);
+    void eliminarParqueaderoPorId(Long id);
 
     int saberCantidadVehiculosIngresado(Long idParqueadero);
 
@@ -27,9 +31,9 @@ public interface ParqueaderoService {
 
     ParqueaderoDTO obtenerParqueaderoSocio(Long idSocio);
 
-    ParqueaderoDTO registrarEntradaVehiculo(Long parqueaderoId,Long idVehiculo);
+    ParqueaderoDTO registrarEntradaVehiculo(Long parqueaderoId, Long idVehiculo);
 
-    ParqueaderoDTO registrarSalidaVehiculo(Long parqueaderoId,Long idVehiculo);
+    ParqueaderoDTO registrarSalidaVehiculo(Long parqueaderoId, Long idVehiculo);
 
     List<VehiculoDTO> listadoVehiculosParqueaderos();
 

@@ -1,115 +1,76 @@
 package com.nelumbo.api.service.impl;
 
 import com.nelumbo.api.dto.request.VehiculoDTO;
+import com.nelumbo.api.entity.Vehiculo;
+import com.nelumbo.api.exception.NotFoundException;
+import com.nelumbo.api.exception.RegistroDuplicadoException;
+import com.nelumbo.api.repository.VehiculoRepository;
 import com.nelumbo.api.service.VehiculoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class VehiculoServicioImpl  implements  VehiculoService {
-    @Override
-    public VehiculoDTO crearVehiculo(VehiculoDTO vehiculoDTO) {
-        return null;
-    }
-
-    @Override
-    public VehiculoDTO buscarVehiculoPorId(Long id) {
-        return null;
-    }
-
-    @Override
-    public List<VehiculoDTO> listaVehiculoDtos() {
-        return null;
-    }
-
-    @Override
-    public VehiculoDTO asociarVehiculoaParqueadero(Long idParqueadero, Long idVehiculo) {
-        return null;
-    }
-/*
-    @Autowired
-    ParqueaderoRepository parqueaderoRepository;
-
+public class VehiculoServicioImpl implements VehiculoService {
     @Autowired
     VehiculoRepository vehiculoRepository;
 
-    @Autowired
-    ParqueaderoService parqueaderoService;
-
-    @Autowired
-    VehiculoConverter vehiculoConverter;
-
     @Override
-    public VehiculoDTO crearVehiculo(VehiculoDTO vehiculoDTO) {
-        boolean isVehiculo = vehiculoRepository.findByPlaca(vehiculoDTO.getPlaca()).isEmpty();
-
-        if (isVehiculo) {
-            Vehiculo vehiculo = vehiculoConverter.vehiculoDtoToVehiculo(vehiculoDTO);
-            Vehiculo nuevoVehiculo = vehiculoRepository.save(vehiculo);
-            VehiculoDTO nuevovehiculoDTO = vehiculoConverter.vehiculoToVehiculoDto(nuevoVehiculo);
-            return nuevovehiculoDTO;
+    public void insertarVehiculo(VehiculoDTO vehiculoDTO) {
+        if (!existVehiculo(vehiculoDTO.getPlaca())) {
+            Vehiculo vehiculo = Vehiculo.builder()
+                    .placa(vehiculoDTO.getPlaca())
+                    .build();
+            vehiculoRepository.save(vehiculo);
+            vehiculoDTO.setId(vehiculo.getId());
         } else {
-            String mensaje = "El Vehiculo con registro " + vehiculoDTO.getPlaca() + " ya existe";
-            throw new IllegalArgumentException(mensaje);
+            throw new RegistroDuplicadoException("El Vehiculo con placa " + vehiculoDTO.getPlaca() + " se encuentra registrado ");
         }
     }
 
     @Override
-    public VehiculoDTO buscarVehiculoPorId(Long id) {
-        Vehiculo vehiculo = vehiculoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("El Vehiculo especificado no existe"));
-        VehiculoDTO vehiculoDTO = vehiculoConverter.vehiculoToVehiculoDto(vehiculo);
-        return vehiculoDTO;
+    public void actualizarVehiculo(Long idVehiculo, VehiculoDTO vehiculoDTO) {
+        Vehiculo vehiculo = buscarVehiculoPorId(idVehiculo);
+        if (vehiculo != null) {
+            vehiculo.setPlaca(vehiculoDTO.getPlaca());
+            vehiculoRepository.save(vehiculo);
+            vehiculoDTO.setId(vehiculo.getId());
+        }
+    }
 
+
+    @Override
+    public Vehiculo buscarVehiculoPorId(Long id) {
+        return vehiculoRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("El vehiculo con id: " +
+                        id + "no se encuentra resgitrado"));
+    }
+
+    @Override
+    public Vehiculo buscarVehiculoPorPlaca(String placa) {
+        return vehiculoRepository.findByPlaca(placa)
+                .orElseThrow(() -> new NotFoundException("El vehiculo con Placa: " +
+                        placa + " no se encuentra resgitrado"));
+    }
+
+    @Override
+    public boolean existVehiculo(String placa) {
+        Optional<Vehiculo> vehiculo = vehiculoRepository.findByPlaca(placa);
+        if (vehiculo.isEmpty()) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public List<VehiculoDTO> listaVehiculoDtos() {
-        List<Vehiculo> listaVehiculos = vehiculoRepository.findAll();
-        List<VehiculoDTO> listaVehiculoDto = new ArrayList<>();
-        for (Vehiculo vehiculo : listaVehiculos) {
-            VehiculoDTO vehiculoDTO = vehiculoConverter.vehiculoToVehiculoDto(vehiculo);
-            listaVehiculoDto.add(vehiculoDTO);
-        }
-        return listaVehiculoDto;
+        return null;
     }
 
     @Override
     public VehiculoDTO asociarVehiculoaParqueadero(Long idParqueadero, Long idVehiculo) {
-        Parqueadero parqueadero = parqueaderoRepository.findById(idParqueadero)
-                .orElseThrow(() -> new ResourceNotFoundException("Parqueadero", "id", idParqueadero));
-
-        Vehiculo vehiculo = vehiculoRepository.findById(idVehiculo)
-                .orElseThrow(() -> new ResourceNotFoundException("Vehículo", "id", idVehiculo));
-
-        if (vehiculo.getFechaSalida() != null) {
-            throw new IllegalStateException("El vehículo ya ha sido registrado como si hubiera salido.");
-        }
-
-        int cantidadVehiculos = parqueaderoService.saberCantidadVehiculosIngresado(idParqueadero);
-
-        if (cantidadVehiculos < parqueadero.getCantidadVehiculos()) {
-            vehiculo.setParqueadero(parqueadero);
-            vehiculoRepository.save(vehiculo);
-            // Actualizar la lista de vehículos en el parqueadero
-            parqueadero.getVehiculos().add(vehiculo);
-            parqueaderoRepository.save(parqueadero);
-            return vehiculoConverter.vehiculoToVehiculoDto(vehiculo);
-        } else {
-            throw new IllegalArgumentException("El Parqueadero ya esta al limite");
-        }
+        return null;
     }
-
-    public VehiculoDTO obtenerDetalleVehiculo(Long idParqueadero, Long idVehiculo) {
-        Parqueadero parqueadero = parqueaderoRepository.findById(idParqueadero)
-                .orElseThrow(() -> new ResourceNotFoundException("Parqueadero", "id", idParqueadero));
-
-        return vehiculoConverter.vehiculoToVehiculoDto(
-                parqueadero.getVehiculos().stream()
-                        .filter(vehiculo -> vehiculo.getId().equals(idVehiculo))
-                        .findFirst()
-                        .orElseThrow(() -> new ResourceNotFoundException("Vehículo", "id", idVehiculo)));
-    }
-    */
-
 }
