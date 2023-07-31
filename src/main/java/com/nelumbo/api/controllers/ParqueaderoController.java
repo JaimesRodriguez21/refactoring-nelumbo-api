@@ -4,22 +4,29 @@ package com.nelumbo.api.controllers;
 import com.nelumbo.api.config.SecurityUtils;
 import com.nelumbo.api.dto.request.ParqueaderoDTO;
 import com.nelumbo.api.dto.request.ParqueaderoSocio;
+import com.nelumbo.api.dto.request.VehiculoDTO;
 import com.nelumbo.api.dto.response.CreatedResponse;
 import com.nelumbo.api.dto.response.DeleteResponse;
 import com.nelumbo.api.dto.response.UpdateResponse;
 import com.nelumbo.api.exception.AccessDeniedException;
 import com.nelumbo.api.service.ParqueaderoService;
+import com.nelumbo.api.service.VehiculoParqueaderoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/parqueaderos")
 public class ParqueaderoController {
     @Autowired
     private ParqueaderoService parqueaderoService;
+
+    @Autowired
+    private VehiculoParqueaderoService vehiculoParqueaderoService;
 
     @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
@@ -59,15 +66,25 @@ public class ParqueaderoController {
     @DeleteMapping(value = "{idParqueadero}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public DeleteResponse eliminarParqueaderoPorId(
-            @PathVariable(name = "idParqueadero") Long idParqueadero)
-    {
+            @PathVariable(name = "idParqueadero") Long idParqueadero) {
         if (SecurityUtils.obtenerRolUsuarioActual().equals("ADMIN")) {
             parqueaderoService.eliminarParqueaderoPorId(idParqueadero);
         } else {
             throw new AccessDeniedException("Acceso denegado");
         }
         return new DeleteResponse("eliminado exitosamente");
+    }
 
+
+    @GetMapping(value = "detalle-vehiculos/{idParqueadero}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<VehiculoDTO> datelleVehiculos(
+            @PathVariable(name = "idParqueadero") Long idParqueadero) {
+        if (SecurityUtils.obtenerRolUsuarioActual().equals("ADMIN")) {
+            return vehiculoParqueaderoService.listVehiculosPorParqueadero(idParqueadero);
+        } else {
+            throw new AccessDeniedException("Acceso denegado");
+        }
     }
 }
 

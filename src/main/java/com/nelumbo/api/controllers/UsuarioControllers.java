@@ -39,11 +39,4 @@ public class UsuarioControllers {
         return new ResponseEntity<>(usuarioService.listUsuario(), HttpStatus.OK);
     }
 
-    /*
-    @GetMapping("/{id}")
-    public ResponseEntity<UsuarioDTO> obtenerUsuarioPorId(@NotNull @PathVariable(name = "id") long id) {
-        return ResponseEntity.ok(usuarioService.obtenerUsuarioPorId(id));
-    }
-*/
-
 }

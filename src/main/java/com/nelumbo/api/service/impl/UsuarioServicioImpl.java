@@ -63,6 +63,13 @@ public class UsuarioServicioImpl implements UsuarioService {
                 .orElseThrow(() -> new NotFoundException("El usuario con id: " + id + " no Existe"));
     }
 
+    @Override
+    public Usuario obtenerUsuarioPorEmail(String email) {
+        return usuarioRepository.findByEmail(email).orElseThrow(
+                ()-> new NotFoundException("Usuario no encontrado")
+        );
+    }
+
     /*
     @Override
     public List<UsuarioDTO> listUsuario() {

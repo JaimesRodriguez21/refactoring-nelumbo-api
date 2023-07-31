@@ -10,4 +10,6 @@ public interface UsuarioService {
     List<UsuarioDTO> listUsuario();
     Usuario obtenerUsuarioPorId(long id);
 
+    Usuario obtenerUsuarioPorEmail(String email);
+
 }
