@@ -16,7 +16,7 @@ public class VehiculoParqueadero {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    private Long ID;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "vehiculo_id")
