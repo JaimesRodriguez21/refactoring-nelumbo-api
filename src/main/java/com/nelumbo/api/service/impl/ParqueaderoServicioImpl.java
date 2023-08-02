@@ -13,6 +13,7 @@ import com.nelumbo.api.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,10 +53,19 @@ public class ParqueaderoServicioImpl implements ParqueaderoService {
         return true;
     }
 
-
-    @Override
-    public List<ParqueaderoDTO> listaParqueaderoDtos() {
-        return null;
+    public List<ParqueaderoDTO> parqueaderosPorSocio(Usuario usuario) {
+        List<Parqueadero> listParqueadero = parqueaderoRepository.findAllBySocio(usuario);
+        List<ParqueaderoDTO> listParqueaderoDto = new ArrayList<>();
+        for (Parqueadero parqueadero : listParqueadero) {
+            ParqueaderoDTO parqueaderoDTO = ParqueaderoDTO
+                    .builder()
+                    .id(parqueadero.getId())
+                    .nombre(parqueadero.getNombre())
+                    .cantidadVehiculos(parqueadero.getCantidadVehiculos())
+                    .build();
+            listParqueaderoDto.add(parqueaderoDTO);
+        }
+        return listParqueaderoDto;
     }
 
     @Override
@@ -65,11 +75,12 @@ public class ParqueaderoServicioImpl implements ParqueaderoService {
     }
 
     @Override
-    public Parqueadero buscarParqueaderoPorSocio(Usuario socio) {
-        return parqueaderoRepository.findBySocio(socio).orElseThrow(
-                () -> new NotFoundException("El usuario no cuenta con parqueadero asignado")
+    public Parqueadero buscarParqueaderoPorSocioAndId(Usuario usuario, Long id) {
+        return parqueaderoRepository.findBySocioAndId(usuario, id).orElseThrow(
+                ()-> new NotFoundException("Actualmente no se encuentra asociado a ese parqueadero")
         );
     }
+
 
     @Override
     public boolean asociarParqueaderoConSocio(ParqueaderoSocio parqueaderoSocio) {
@@ -98,6 +109,7 @@ public class ParqueaderoServicioImpl implements ParqueaderoService {
             parqueadero.setCantidadVehiculos(parqueaderoDTO.getCantidadVehiculos());
             parqueadero.setNombre(parqueaderoDTO.getNombre());
             parqueaderoRepository.save(parqueadero);
+            parqueaderoDTO.setId(parqueadero.getId());
         }
     }
 

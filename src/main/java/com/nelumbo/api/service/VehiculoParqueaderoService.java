@@ -2,10 +2,10 @@ package com.nelumbo.api.service;
 
 import com.nelumbo.api.dto.request.VehiculoDTO;
 import com.nelumbo.api.dto.request.VehiculoParqueaderoDTO;
+import com.nelumbo.api.dto.response.VehiculoResponse;
 import com.nelumbo.api.entity.Parqueadero;
-import com.nelumbo.api.entity.Usuario;
 import com.nelumbo.api.entity.Vehiculo;
-import com.nelumbo.api.entity.VehiculoParqueadero;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -19,11 +19,11 @@ public interface VehiculoParqueaderoService {
 
     int vehiculosEnParqueadero(Parqueadero parqueadero);
 
-    VehiculoParqueadero buscarVehiculoParqueaderoPorId(long id);
+    List<VehiculoDTO> listVehiculosPorParqueadero(Parqueadero parqueadero);
 
-    List<VehiculoDTO> listVehiculos();
-    List<VehiculoDTO> listVehiculosPorParqueadero(Long idParqueadero);
+    List<VehiculoDTO> findVehiculoPorCoincidencia(String indicio);
 
-    List<VehiculoDTO> listVehiculosPorSocio(Usuario usuario);
+    Page<VehiculoResponse> findTopVehiculosRegistrados(int pageNumber, int pageSize);
+    Page<VehiculoResponse> findTopVehiculosRegistradoPorParqueadero(Parqueadero parqueadero,int pageNumber, int pageSize);
 
 }

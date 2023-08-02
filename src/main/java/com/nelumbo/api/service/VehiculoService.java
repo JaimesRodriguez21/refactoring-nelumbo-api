@@ -8,12 +8,10 @@ import java.util.List;
 
 @Service
 public interface VehiculoService {
-    void insertarVehiculo(VehiculoDTO vehiculoDTO);
+    void insertarVehiculo(Vehiculo vehiculo);
     void actualizarVehiculo(Long idVehiculo,VehiculoDTO vehiculoDTO);
     boolean existVehiculo(String placa);
     Vehiculo buscarVehiculoPorId(Long id);
     Vehiculo buscarVehiculoPorPlaca(String placa);
-    List<VehiculoDTO> listaVehiculoDtos();
-    VehiculoDTO asociarVehiculoaParqueadero(Long idParqueadero,Long idVehiculo);
 
 }

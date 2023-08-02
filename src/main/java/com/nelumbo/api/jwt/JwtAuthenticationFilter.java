@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -45,7 +44,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             username = jwtService.getUsernameFromToken(token);
         } catch (ExpiredJwtException e) {
-            String textError= "Token Expirado";
+            String textError = "Token Expirado";
             errorException(response, HttpStatus.UNAUTHORIZED.value(), textError);
             return;
         }
@@ -65,6 +64,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
 
         }
+
+        SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+
 
         filterChain.doFilter(request, response);
     }

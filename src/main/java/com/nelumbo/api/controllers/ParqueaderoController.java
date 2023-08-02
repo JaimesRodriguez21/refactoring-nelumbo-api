@@ -1,14 +1,14 @@
 package com.nelumbo.api.controllers;
 
 
-import com.nelumbo.api.config.SecurityUtils;
+import com.nelumbo.api.annotations.IngressAllowed;
 import com.nelumbo.api.dto.request.ParqueaderoDTO;
 import com.nelumbo.api.dto.request.ParqueaderoSocio;
 import com.nelumbo.api.dto.request.VehiculoDTO;
 import com.nelumbo.api.dto.response.CreatedResponse;
 import com.nelumbo.api.dto.response.DeleteResponse;
 import com.nelumbo.api.dto.response.UpdateResponse;
-import com.nelumbo.api.exception.AccessDeniedException;
+import com.nelumbo.api.entity.Parqueadero;
 import com.nelumbo.api.service.ParqueaderoService;
 import com.nelumbo.api.service.VehiculoParqueaderoService;
 import jakarta.validation.Valid;
@@ -28,63 +28,50 @@ public class ParqueaderoController {
     @Autowired
     private VehiculoParqueaderoService vehiculoParqueaderoService;
 
-    @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @IngressAllowed({"ADMIN"})
+    @PostMapping(path = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public CreatedResponse registrarParqueadero(@Valid @RequestBody ParqueaderoDTO parqueaderoDTO) {
-        if (SecurityUtils.obtenerRolUsuarioActual().equals("ADMIN")) {
-            parqueaderoService.insertarParqueadero(parqueaderoDTO);
-        } else {
-            throw new AccessDeniedException("Acceso denegado");
-        }
+        parqueaderoService.insertarParqueadero(parqueaderoDTO);
         return new CreatedResponse(parqueaderoDTO.getId());
     }
 
-    @PutMapping(value = "{idParqueadero}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @IngressAllowed({"ADMIN"})
+    @PostMapping(path = "socio-parqueadero", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public CreatedResponse asociarParqueaderoPorSocio(@Valid @RequestBody ParqueaderoSocio parqueaderoSocio) {
+        parqueaderoService.asociarParqueaderoConSocio(parqueaderoSocio);
+        return new CreatedResponse(parqueaderoSocio.getId());
+    }
+
+    @IngressAllowed({"ADMIN"})
+    @PutMapping(path = "{idParqueadero}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public UpdateResponse actualizarParqueadero(
             @PathVariable(name = "idParqueadero") Long idParqueadero,
             @Valid @RequestBody ParqueaderoDTO parqueaderoDTO) {
-        if (SecurityUtils.obtenerRolUsuarioActual().equals("ADMIN")) {
-            parqueaderoService.actualizarParqueadero(idParqueadero, parqueaderoDTO);
-        } else {
-            throw new AccessDeniedException("Acceso denegado");
-        }
+        parqueaderoService.actualizarParqueadero(idParqueadero, parqueaderoDTO);
         return new UpdateResponse(parqueaderoDTO.getId(), "actualizado exitosamente");
     }
 
-    @PostMapping(value = "socio-parqueadero", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
-    public CreatedResponse asociarParqueaderoPorSocio(@Valid @RequestBody ParqueaderoSocio parqueaderoSocio) {
-        if (SecurityUtils.obtenerRolUsuarioActual().equals("ADMIN")) {
-            parqueaderoService.asociarParqueaderoConSocio(parqueaderoSocio);
-        } else {
-            throw new AccessDeniedException("Acceso denegado");
-        }
-        return new CreatedResponse(parqueaderoSocio.getId());
-    }
-
-    @DeleteMapping(value = "{idParqueadero}")
+    @IngressAllowed({"ADMIN"})
+    @DeleteMapping(path = "{idParqueadero}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public DeleteResponse eliminarParqueaderoPorId(
             @PathVariable(name = "idParqueadero") Long idParqueadero) {
-        if (SecurityUtils.obtenerRolUsuarioActual().equals("ADMIN")) {
-            parqueaderoService.eliminarParqueaderoPorId(idParqueadero);
-        } else {
-            throw new AccessDeniedException("Acceso denegado");
-        }
+        parqueaderoService.eliminarParqueaderoPorId(idParqueadero);
         return new DeleteResponse("eliminado exitosamente");
     }
 
-
-    @GetMapping(value = "detalle-vehiculos/{idParqueadero}")
+    @IngressAllowed({"ADMIN"})
+    @GetMapping(path = "detalle-vehiculos/{idParqueadero}")
     @ResponseStatus(HttpStatus.OK)
     public List<VehiculoDTO> datelleVehiculos(
             @PathVariable(name = "idParqueadero") Long idParqueadero) {
-        if (SecurityUtils.obtenerRolUsuarioActual().equals("ADMIN")) {
-            return vehiculoParqueaderoService.listVehiculosPorParqueadero(idParqueadero);
-        } else {
-            throw new AccessDeniedException("Acceso denegado");
-        }
+        Parqueadero parqueadero = parqueaderoService.buscarParqueaderoPorId(idParqueadero);
+        return vehiculoParqueaderoService.listVehiculosPorParqueadero(parqueadero);
     }
+
+
 }
 

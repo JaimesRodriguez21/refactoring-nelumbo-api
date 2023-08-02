@@ -29,14 +29,8 @@ public class UsuarioServicioImpl implements UsuarioService {
     private RolService rolService;
 
     @Override
-    public boolean crearUsuario(UsuarioDTO usuarioDTO, boolean isAdmin) {
+    public boolean crearUsuario(UsuarioDTO usuarioDTO) {
         Rol rol = rolService.obtenerPorPorId(usuarioDTO.getRolId());
-
-        if (!isAdmin) {
-            if (rol.getNombre().equals("ADMIN")) {
-                throw new AccessDeniedException("Acceso denegado");
-            }
-        }
         Usuario usuario = Usuario.builder()
                 .nombre(usuarioDTO.getNombre())
                 .password(passwordEncoder.encode(usuarioDTO.getPass()))
@@ -69,32 +63,4 @@ public class UsuarioServicioImpl implements UsuarioService {
                 ()-> new NotFoundException("Usuario no encontrado")
         );
     }
-
-    /*
-    @Override
-    public List<UsuarioDTO> listUsuario() {
-        List<Usuario> listUsuario = usuarioRepository.findAll();
-        List<UsuarioDTO> listUsuarioDTO = new ArrayList<>();
-
-        for (Usuario usuario : listUsuario) {
-          //  listUsuarioDTO.add(usuarioConverter.usuarioToUsuarioDTO(usuario));
-        }
-        return listUsuarioDTO;
-    }
-
-    @Override
-    public UsuarioDTO obtenerUsuarioPorId(long id) {
-        Usuario usuario = usuarioRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuario", "id", id));
-        return usuarioConverter.usuarioToUsuarioDTO(usuario);
-    }
-
-    /*public Usuario buscarPorEmail(String email) {
-        return usuarioRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("El usuario con email " + email + " no existe"));
-    }
-
-     */
-
-
 }

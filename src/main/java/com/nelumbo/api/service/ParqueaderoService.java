@@ -2,7 +2,6 @@ package com.nelumbo.api.service;
 
 import com.nelumbo.api.dto.request.ParqueaderoDTO;
 import com.nelumbo.api.dto.request.ParqueaderoSocio;
-import com.nelumbo.api.dto.request.VehiculoDTO;
 import com.nelumbo.api.entity.Parqueadero;
 import com.nelumbo.api.entity.Usuario;
 import org.springframework.stereotype.Service;
@@ -22,9 +21,10 @@ public interface ParqueaderoService {
 
     void actualizarParqueadero(Long id ,ParqueaderoDTO parqueaderoDTO);
 
-    List<ParqueaderoDTO> listaParqueaderoDtos();
+    List<ParqueaderoDTO> parqueaderosPorSocio(Usuario usuario);
 
     void eliminarParqueaderoPorId(Long id);
 
-    Parqueadero buscarParqueaderoPorSocio(Usuario socio);
+    Parqueadero buscarParqueaderoPorSocioAndId(Usuario usuario, Long id);
+
 }

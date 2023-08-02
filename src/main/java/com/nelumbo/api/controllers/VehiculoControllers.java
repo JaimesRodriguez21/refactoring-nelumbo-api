@@ -1,19 +1,23 @@
 package com.nelumbo.api.controllers;
-import com.nelumbo.api.config.SecurityUtils;
+
+import com.nelumbo.api.annotations.IngressAllowed;
 import com.nelumbo.api.dto.request.VehiculoDTO;
-;
-import com.nelumbo.api.dto.response.CreatedResponse;
 import com.nelumbo.api.dto.response.UpdateResponse;
-import com.nelumbo.api.exception.AccessDeniedException;
+import com.nelumbo.api.dto.response.VehiculoResponse;
+import com.nelumbo.api.entity.Parqueadero;
+import com.nelumbo.api.service.ParqueaderoService;
+import com.nelumbo.api.service.VehiculoParqueaderoService;
 import com.nelumbo.api.service.VehiculoService;
-import com.nelumbo.api.exception.ErrorResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+;
 
 @RestController
 @RequestMapping(value = "/vehiculos")
@@ -22,29 +26,45 @@ public class VehiculoControllers {
     @Autowired
     private VehiculoService vehiculoService;
 
-    @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
-    public CreatedResponse registrarVehiculo(@Valid @RequestBody VehiculoDTO  vehiculoDTO) {
-       if(SecurityUtils.obtenerRolUsuarioActual().equals("CLIENTE")){
-            vehiculoService.insertarVehiculo(vehiculoDTO);
-       }else{
-           throw new AccessDeniedException("Acceso degenado");
-       }
-       return new CreatedResponse(vehiculoDTO.getId());
-    }
+    @Autowired
+    private VehiculoParqueaderoService vehiculoParqueaderoService;
 
+    @Autowired
+    private ParqueaderoService parqueaderoService;
+
+    @IngressAllowed({"CLIENTE"})
     @PutMapping(value = "{idVehiculo}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public UpdateResponse actualizarVehiculo(
-            @PathVariable(name = "idVehiculo") Long idVehiculo,
-            @Valid @RequestBody VehiculoDTO vehiculoDTO
-    ){
-        if(SecurityUtils.obtenerRolUsuarioActual().equals("CLIENTE")){
-            vehiculoService.actualizarVehiculo(idVehiculo,vehiculoDTO);
-        }else{
-            throw new AccessDeniedException("Acceso degenado");
-        }
+    public UpdateResponse actualizarVehiculo(@PathVariable(name = "idVehiculo") Long idVehiculo, @Valid @RequestBody VehiculoDTO vehiculoDTO) {
+        vehiculoService.actualizarVehiculo(idVehiculo, vehiculoDTO);
         return new UpdateResponse(idVehiculo, "actualizado exitosamente");
     }
+
+    @IngressAllowed({"ADMIN", "SOCIO"})
+    @GetMapping(path = "mas-ingresos", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public Page<VehiculoResponse> vehiculosConMasIngresos(@RequestParam(defaultValue = "0") int pageNumber, @RequestParam(defaultValue = "10") int pageSize) {
+        return vehiculoParqueaderoService.findTopVehiculosRegistrados(pageNumber, pageSize);
+    }
+
+    @IngressAllowed({"ADMIN", "SOCIO"})
+    @GetMapping(path = "mas-ingresos-parqueadero/{idParqueadero}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public Page<VehiculoResponse> vehiculosConMasIngresosPorParqueadero(
+            @PathVariable(name = "idParqueadero") Long idParqueadero,
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "10") int pageSize) {
+
+        Parqueadero parqueadero = parqueaderoService.buscarParqueaderoPorId(idParqueadero);
+        return vehiculoParqueaderoService.findTopVehiculosRegistradoPorParqueadero(parqueadero,pageNumber, pageSize);
+    }
+
+    @IngressAllowed({"ADMIN", "SOCIO"})
+        @GetMapping(path = "coincidencia", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public List<VehiculoDTO> buscarVehiculoPorCoincidencia(@RequestParam(defaultValue = "") String textoBusqueda) {
+        return vehiculoParqueaderoService.findVehiculoPorCoincidencia(textoBusqueda);
+    }
+
 
 }

@@ -6,7 +6,7 @@ import com.nelumbo.api.entity.Usuario;
 import java.util.List;
 
 public interface UsuarioService {
-    boolean crearUsuario(UsuarioDTO usuarioDTO, boolean isAdmin);
+    boolean crearUsuario(UsuarioDTO usuarioDTO);
     List<UsuarioDTO> listUsuario();
     Usuario obtenerUsuarioPorId(long id);
 

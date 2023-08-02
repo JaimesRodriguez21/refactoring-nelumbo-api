@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface VehiculoParqueaderoRepository extends JpaRepository<VehiculoParqueadero, Long> {
 
@@ -16,9 +15,11 @@ public interface VehiculoParqueaderoRepository extends JpaRepository<VehiculoPar
 
     VehiculoParqueadero findByVehiculo(Vehiculo vehiculo);
 
-    @Query("SELECT vepa.vehiculo FROM VehiculoParqueadero vepa")
-    List<Vehiculo> findAllVehiculos();
-
     @Query("SELECT vepa.vehiculo FROM VehiculoParqueadero vepa WHERE vepa.parqueadero = :parqueadero")
     List<Vehiculo> findByParqueadero(@Param("parqueadero") Parqueadero parqueadero);
+
+    @Query("SELECT vepa.vehiculo FROM VehiculoParqueadero vepa WHERE vepa.vehiculo.placa LIKE %:placa%")
+    List<Vehiculo> findPorCoincidencia(@Param("placa") String placa);
+
+
 }

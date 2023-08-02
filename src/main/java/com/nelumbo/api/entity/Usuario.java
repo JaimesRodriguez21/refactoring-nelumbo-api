@@ -48,7 +48,6 @@ public class Usuario  implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        System.out.println("roll--->" + rol.getNombre());
         return List.of(new SimpleGrantedAuthority((rol.getNombre())));
     }
 
