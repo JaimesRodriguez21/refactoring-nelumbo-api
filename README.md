@@ -9,7 +9,7 @@ Requisitos
 - JDK 11 o superior
 - Spring boot 3.0 o superior
 - Configuracion de DB PostgreSql
-- Nombre Base: 'Parqueadero'
+- Nombre Base: 'parqueadero'
 
 ## Instalación
 
