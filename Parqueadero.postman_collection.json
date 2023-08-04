@@ -1,0 +1,652 @@
+{
+	"info": {
+		"_postman_id": "34c8a215-9d31-4399-96ea-01d021fbdc10",
+		"name": "Parqueadero",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23268491"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "loginAdmin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"admin@gmail.com\",\r\n    \"password\": \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/auth/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LoginSocio",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"prueba2@gmail.com\",\r\n    \"password\": \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/auth/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "CrearSocio",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE2OTA3NjgzMzgsImV4cCI6MTY5MDc4OTkzOH0.bXm1ZFx4MU27Qx8c0C-gHQf1e0hX66a16GB0EU3UFwI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"pepitoPerez\",\r\n    \"email\": \"prueba1@gmail.com\",\r\n    \"pass\": \"admin\",\r\n    \"rolId\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/usuarios",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CrearParqueadero",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE2OTA0OTIyOTUsImV4cCI6MTY5MDUxMzg5NX0.nzCycEo7oo8Eqzslez4GHR6Fj63p-4hpR3weh7Y1o-s",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"prueba\",\r\n    \"registro\": \"1235479\",\r\n    \"cantidadVehiculos\": 20\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/parqueaderos",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"parqueaderos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ActualizarParqueadero",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenAdmin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"leonardUpdate\",\r\n    \"cantidadVehiculos\": \"5\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/parqueaderos/11",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"parqueaderos",
+								"11"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EliminarParqueadero",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/parqueaderos/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"parqueaderos",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listadoParqueaderos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenAdmin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/parqueaderos",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"parqueaderos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ParqueaderoPorId",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "asociarParqueaderoSocios",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenAdmin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"parqueaderoId\": 11,\r\n    \"socioId\": 5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/parqueaderos/socios",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"parqueaderos",
+								"socios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "vehiculosConMasIngresos",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "detalleVehiculosParqueadero",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenAdmin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/parqueaderos/11/vehiculos",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"parqueaderos",
+								"11",
+								"vehiculos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "vehiculosPorCoincidencia",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenAdmin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/vehiculos/coincidencia?textoBusqueda=z",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"vehiculos",
+								"coincidencia"
+							],
+							"query": [
+								{
+									"key": "textoBusqueda",
+									"value": "z"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sendEmail",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenAdmin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"prueba@gmail.com\",\r\n    \"placa\": \"123456\",\r\n    \"mensaje\": \"tiempo Agotado\",\r\n    \"nombreParqueadero\": \"XD\"  \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/mensajeria",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"mensajeria"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Socio",
+			"item": [
+				{
+					"name": "vehiculosPorCoincidencia",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcnVlYmExQGdtYWlsLmNvbSIsImlhdCI6MTY5MTAwNTA3MywiZXhwIjoxNjkxMDI2NjczfQ.2bLS-nr-JnVbKixeIVqFj4oRv5gVhcCEz3AevpPJccc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/vehiculos/coincidencia?textoBusqueda=2",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"vehiculos",
+								"coincidencia"
+							],
+							"query": [
+								{
+									"key": "textoBusqueda",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DetalleVehiculos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenSocio}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/socios/vehiculos-parqueadero/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"socios",
+								"vehiculos-parqueadero",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "vehiculosConMasIngresos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcnVlYmExQGdtYWlsLmNvbSIsImlhdCI6MTY5MTAwNTA3MywiZXhwIjoxNjkxMDI2NjczfQ.2bLS-nr-JnVbKixeIVqFj4oRv5gVhcCEz3AevpPJccc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/vehiculos/mas-ingresos",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"vehiculos",
+								"mas-ingresos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "vehiculosConMasIngresosParqueadero",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcnVlYmExQGdtYWlsLmNvbSIsImlhdCI6MTY5MTAwNTA3MywiZXhwIjoxNjkxMDI2NjczfQ.2bLS-nr-JnVbKixeIVqFj4oRv5gVhcCEz3AevpPJccc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/vehiculos/mas-ingresos",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"vehiculos",
+								"mas-ingresos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ParqueaderosAsociados",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenAdmin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/socios/parqueaderos",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"socios",
+								"parqueaderos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ingresoVehiculo",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenSocio}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"idParqueadero\": 11,\r\n    \"placa\": \"sadasdad\"\r\n \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/socios/ingreso-vehiculo",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"socios",
+								"ingreso-vehiculo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SalidaVehiculo",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenSocio}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"placa\": \"12345t\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/socios/salida-vehiculo",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"socios",
+								"salida-vehiculo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "vehiculosPrimeraVez",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcnVlYmExQGdtYWlsLmNvbSIsImlhdCI6MTY5MTA3MDg0OSwiZXhwIjoxNjkxMDkyNDQ5fQ.jtiqiG99-rL8Z8TGtzxnz_GxS0dY8wHwHX6rcGtkli4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/vehiculos/primera-vez",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"vehiculos",
+								"primera-vez"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gananciasParqueadero",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/ganancias-parqueadero/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"ganancias-parqueadero",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
