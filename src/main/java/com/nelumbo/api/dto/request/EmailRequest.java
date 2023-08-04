@@ -14,12 +14,15 @@ import lombok.Setter;
 public class EmailRequest {
     @NotNull(message = "Campo requerido")
     @NotBlank(message = "Campo requerido")
-    private String placa;
-    @NotNull(message = "Campo requerido")
-    @NotBlank(message = "Campo requerido")
     private String email;
     @NotNull(message = "Campo requerido")
     @NotBlank(message = "Campo requerido")
+    private String placa;
+    @NotNull(message = "Campo requerido")
+    @NotBlank(message = "Campo requerido")
     private String mensaje;
+    @NotNull(message = "Campo requerido")
+    @NotBlank(message = "Campo requerido")
+    private String parqueaderoNombre;
 
 }

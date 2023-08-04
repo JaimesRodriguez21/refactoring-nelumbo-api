@@ -32,6 +32,7 @@ public class ParqueaderoServicioImpl implements ParqueaderoService {
             Parqueadero parqueadero = Parqueadero.builder()
                     .CantidadVehiculos(parqueaderoDTO.getCantidadVehiculos())
                     .nombre(parqueaderoDTO.getNombre())
+                    .costo(parqueaderoDTO.getCosto())
                     .build();
 
             parqueaderoRepository.save(parqueadero);
@@ -75,6 +76,23 @@ public class ParqueaderoServicioImpl implements ParqueaderoService {
     }
 
     @Override
+    public List<ParqueaderoDTO> parqueaderos() {
+        List<Parqueadero> listParqueadero = parqueaderoRepository.findAll();
+        List<ParqueaderoDTO> listParqueaderoDto = new ArrayList<>();
+        for (Parqueadero parqueadero: listParqueadero) {
+            ParqueaderoDTO parqueaderoDTO = ParqueaderoDTO
+                    .builder()
+                    .id(parqueadero.getId())
+                    .nombre(parqueadero.getNombre())
+                    .costo(parqueadero.getCosto())
+                    .cantidadVehiculos(parqueadero.getCantidadVehiculos())
+                    .build();
+            listParqueaderoDto.add(parqueaderoDTO);
+        }
+        return listParqueaderoDto;
+    }
+
+    @Override
     public Parqueadero buscarParqueaderoPorSocioAndId(Usuario usuario, Long id) {
         return parqueaderoRepository.findBySocioAndId(usuario, id).orElseThrow(
                 ()-> new NotFoundException("Actualmente no se encuentra asociado a ese parqueadero")
@@ -108,6 +126,7 @@ public class ParqueaderoServicioImpl implements ParqueaderoService {
         if (parqueadero != null) {
             parqueadero.setCantidadVehiculos(parqueaderoDTO.getCantidadVehiculos());
             parqueadero.setNombre(parqueaderoDTO.getNombre());
+            parqueadero.setCosto(parqueaderoDTO.getCosto());
             parqueaderoRepository.save(parqueadero);
             parqueaderoDTO.setId(parqueadero.getId());
         }

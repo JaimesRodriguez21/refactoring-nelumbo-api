@@ -13,17 +13,19 @@ public interface ParqueaderoService {
 
     boolean insertarParqueadero(ParqueaderoDTO parqueaderoDTO);
 
+    void actualizarParqueadero(Long id ,ParqueaderoDTO parqueaderoDTO);
+
+    void eliminarParqueaderoPorId(Long id);
+
+    List<ParqueaderoDTO> parqueaderos();
+
     boolean isEmptyParqueadero(String Registro);
 
     Parqueadero buscarParqueaderoPorId(Long id);
 
     boolean asociarParqueaderoConSocio(ParqueaderoSocio parqueaderoSocioRequest);
 
-    void actualizarParqueadero(Long id ,ParqueaderoDTO parqueaderoDTO);
-
     List<ParqueaderoDTO> parqueaderosPorSocio(Usuario usuario);
-
-    void eliminarParqueaderoPorId(Long id);
 
     Parqueadero buscarParqueaderoPorSocioAndId(Usuario usuario, Long id);
 

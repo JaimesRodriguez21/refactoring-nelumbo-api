@@ -9,7 +9,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Succesfull {
+public class SuccesfullResponse {
 
     private String message;
+
 }

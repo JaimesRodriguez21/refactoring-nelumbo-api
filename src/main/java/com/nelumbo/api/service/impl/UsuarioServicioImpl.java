@@ -4,6 +4,7 @@ import com.nelumbo.api.dto.request.UsuarioDTO;
 import com.nelumbo.api.entity.Rol;
 import com.nelumbo.api.entity.Usuario;
 import com.nelumbo.api.exception.AccessDeniedException;
+import com.nelumbo.api.exception.BadRequest;
 import com.nelumbo.api.exception.EmailDuplicadoException;
 import com.nelumbo.api.exception.NotFoundException;
 import com.nelumbo.api.repository.UsuarioRepository;
@@ -31,6 +32,10 @@ public class UsuarioServicioImpl implements UsuarioService {
     @Override
     public boolean crearUsuario(UsuarioDTO usuarioDTO) {
         Rol rol = rolService.obtenerPorPorId(usuarioDTO.getRolId());
+        if(rol.getNombre().equals("ADMIN")){
+            throw new NotFoundException("Rol con ID: " + usuarioDTO.getRolId() + " no encontrado.");
+        }
+
         Usuario usuario = Usuario.builder()
                 .nombre(usuarioDTO.getNombre())
                 .password(passwordEncoder.encode(usuarioDTO.getPass()))

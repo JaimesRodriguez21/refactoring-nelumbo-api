@@ -2,6 +2,7 @@ package com.nelumbo.api.dto.request;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,5 +25,6 @@ public class VehiculoParqueaderoDTO {
     @Length(min = 6, max = 6)
     @NotNull(message = "Campo requerido")
     @NotBlank(message = "El campo no puede ser vacio")
+    @Pattern(regexp = "^[a-zA-Z0-9&&[^ñ]]*$", message = "No se permiten caracteres especiales ni la letra 'ñ'")
     private String placa;
 }

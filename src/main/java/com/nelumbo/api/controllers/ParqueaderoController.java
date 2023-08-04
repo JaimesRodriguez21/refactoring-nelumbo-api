@@ -7,11 +7,13 @@ import com.nelumbo.api.dto.request.ParqueaderoSocio;
 import com.nelumbo.api.dto.request.VehiculoDTO;
 import com.nelumbo.api.dto.response.CreatedResponse;
 import com.nelumbo.api.dto.response.DeleteResponse;
+import com.nelumbo.api.dto.response.ParqueaderoResponse;
 import com.nelumbo.api.dto.response.UpdateResponse;
 import com.nelumbo.api.entity.Parqueadero;
 import com.nelumbo.api.service.ParqueaderoService;
 import com.nelumbo.api.service.VehiculoParqueaderoService;
 import jakarta.validation.Valid;
+import org.aspectj.weaver.NewConstructorTypeMunger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -37,14 +39,6 @@ public class ParqueaderoController {
     }
 
     @IngressAllowed({"ADMIN"})
-    @PostMapping(path = "socio-parqueadero", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
-    public CreatedResponse asociarParqueaderoPorSocio(@Valid @RequestBody ParqueaderoSocio parqueaderoSocio) {
-        parqueaderoService.asociarParqueaderoConSocio(parqueaderoSocio);
-        return new CreatedResponse(parqueaderoSocio.getId());
-    }
-
-    @IngressAllowed({"ADMIN"})
     @PutMapping(path = "{idParqueadero}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public UpdateResponse actualizarParqueadero(
@@ -64,14 +58,47 @@ public class ParqueaderoController {
     }
 
     @IngressAllowed({"ADMIN"})
-    @GetMapping(path = "detalle-vehiculos/{idParqueadero}")
+    @GetMapping(path = "")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ParqueaderoDTO> parqueaderos() {
+        return parqueaderoService.parqueaderos();
+    }
+
+    @IngressAllowed({"ADMIN"})
+    @GetMapping(path = "{idParqueadero}")
+    @ResponseStatus(HttpStatus.OK)
+    public ParqueaderoResponse parqueaderoPorid(
+            @PathVariable(value = "idParqueadero") Long idParqueadero
+    ) {
+        Parqueadero parqueadero = parqueaderoService.buscarParqueaderoPorId(idParqueadero);
+        ParqueaderoResponse parqueaderoResponse = ParqueaderoResponse
+                .builder()
+                .id(parqueadero.getId())
+                .nombre(parqueadero.getNombre())
+                .costo(parqueadero.getCosto())
+                .cantidadVehiculos(parqueadero.getCantidadVehiculos())
+                .fechaRegistro(parqueadero.getFechaRegistro())
+                .fechaUpdate(parqueadero.getFechaActualizacion())
+                .build();
+        return parqueaderoResponse;
+    }
+
+    @IngressAllowed({"ADMIN"})
+    @PostMapping(path = "socios", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public CreatedResponse asociarParqueaderoPorSocio(@Valid @RequestBody ParqueaderoSocio parqueaderoSocio) {
+        parqueaderoService.asociarParqueaderoConSocio(parqueaderoSocio);
+        return new CreatedResponse(parqueaderoSocio.getId());
+    }
+
+    @IngressAllowed({"ADMIN"})
+    @GetMapping(path = "/{idParqueadero}/vehiculos")
     @ResponseStatus(HttpStatus.OK)
     public List<VehiculoDTO> datelleVehiculos(
             @PathVariable(name = "idParqueadero") Long idParqueadero) {
         Parqueadero parqueadero = parqueaderoService.buscarParqueaderoPorId(idParqueadero);
         return vehiculoParqueaderoService.listVehiculosPorParqueadero(parqueadero);
     }
-
 
 }
 

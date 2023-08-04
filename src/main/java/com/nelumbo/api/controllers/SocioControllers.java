@@ -6,7 +6,8 @@ import com.nelumbo.api.dto.request.ParqueaderoDTO;
 import com.nelumbo.api.dto.request.VehiculoDTO;
 import com.nelumbo.api.dto.request.VehiculoParqueaderoDTO;
 import com.nelumbo.api.dto.response.CreatedResponse;
-import com.nelumbo.api.dto.response.Succesfull;
+import com.nelumbo.api.dto.response.GananciaResponse;
+import com.nelumbo.api.dto.response.SuccesfullResponse;
 import com.nelumbo.api.entity.Parqueadero;
 import com.nelumbo.api.entity.Usuario;
 import com.nelumbo.api.service.ParqueaderoService;
@@ -36,10 +37,12 @@ public class SocioControllers {
     @Autowired
     VehiculoParqueaderoService vehiculoParqueaderoService;
 
-    @IngressAllowed({"ADMIN"})
+    @IngressAllowed({"SOCIO"})
     @PostMapping(path = "ingreso-vehiculo", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public CreatedResponse RegistrarIngreso(@Valid @RequestBody VehiculoParqueaderoDTO vehiculoParqueaderoDTO) {
+        Usuario socio = usuarioService.obtenerUsuarioPorEmail(SecurityUtils.obtenerUsernameUser());
+        parqueaderoService.buscarParqueaderoPorSocioAndId(socio, vehiculoParqueaderoDTO.getIdParqueadero());
         vehiculoParqueaderoService.ingresoVehiculo(vehiculoParqueaderoDTO);
         return new CreatedResponse(vehiculoParqueaderoDTO.getId());
     }
@@ -47,9 +50,9 @@ public class SocioControllers {
     @IngressAllowed({"SOCIO"})
     @PostMapping(path = "salida-vehiculo", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public Succesfull RegistrarSalida(@Valid @RequestBody VehiculoDTO vehiculoDTO) {
+    public SuccesfullResponse RegistrarSalida(@Valid @RequestBody VehiculoDTO vehiculoDTO) {
         vehiculoParqueaderoService.salidaVehiculo(vehiculoDTO);
-        return new Succesfull("Salida registrada");
+        return new SuccesfullResponse("Salida registrada");
     }
 
     @IngressAllowed({"SOCIO"})
@@ -69,4 +72,17 @@ public class SocioControllers {
         Parqueadero parqueadero = parqueaderoService.buscarParqueaderoPorSocioAndId(socio, idParqueadero);
         return vehiculoParqueaderoService.listVehiculosPorParqueadero(parqueadero);
     }
+
+    @IngressAllowed({"SOCIO"})
+    @GetMapping(path = "ganancias-parqueadero/{idParqueadero}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public GananciaResponse obtenerGanancias(
+            @PathVariable(value = "idParqueadero") Long idParqueadero,
+            @RequestParam(defaultValue = "dia") String tiempo
+    ) {
+        Usuario socio = usuarioService.obtenerUsuarioPorEmail(SecurityUtils.obtenerUsernameUser());
+        Parqueadero parqueadero = parqueaderoService.buscarParqueaderoPorSocioAndId(socio, idParqueadero);
+        return vehiculoParqueaderoService.gananciaParqueadero(tiempo, parqueadero.getId());
+    }
+
 }

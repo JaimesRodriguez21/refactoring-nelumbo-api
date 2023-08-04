@@ -3,6 +3,7 @@ package com.nelumbo.api.controllers;
 import com.nelumbo.api.annotations.IngressAllowed;
 import com.nelumbo.api.dto.request.VehiculoDTO;
 import com.nelumbo.api.dto.response.UpdateResponse;
+import com.nelumbo.api.dto.response.VehiculoParqueaderoResponse;
 import com.nelumbo.api.dto.response.VehiculoResponse;
 import com.nelumbo.api.entity.Parqueadero;
 import com.nelumbo.api.service.ParqueaderoService;
@@ -60,10 +61,18 @@ public class VehiculoControllers {
     }
 
     @IngressAllowed({"ADMIN", "SOCIO"})
-        @GetMapping(path = "coincidencia", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "coincidencia", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public List<VehiculoDTO> buscarVehiculoPorCoincidencia(@RequestParam(defaultValue = "") String textoBusqueda) {
         return vehiculoParqueaderoService.findVehiculoPorCoincidencia(textoBusqueda);
+    }
+
+
+    @IngressAllowed({"ADMIN", "SOCIO"})
+    @GetMapping(path = "primera-vez", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public List<VehiculoParqueaderoResponse> verificarvehiculosPorPrimeraVez() {
+        return vehiculoParqueaderoService.vehiculoPorPrimeraVez();
     }
 
 

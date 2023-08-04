@@ -26,6 +26,9 @@ public class Parqueadero {
     @Column(name = "cantidadvehiculos")
     private Long CantidadVehiculos;
 
+    @Column(name = "costo")
+    private Double costo;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="usuario_id")
     private Usuario socio;

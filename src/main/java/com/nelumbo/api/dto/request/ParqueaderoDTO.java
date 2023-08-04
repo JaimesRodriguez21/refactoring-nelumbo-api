@@ -21,4 +21,8 @@ public class ParqueaderoDTO {
     @Min(value = 0, message = "Debe ser un número válido mayor o igual a 0")
     private Long cantidadVehiculos;
 
+    @NotNull(message = "no puede ser nulo")
+    @Min(value = 1, message = "Debe ser un número válido mayor o igual a 0")
+    private Double costo;
+
 }
