@@ -1,10 +1,8 @@
 package com.nelumbo.api.service;
 
-import com.nelumbo.api.dto.request.VehiculoDTO;
+import com.nelumbo.api.dto.VehiculoDTO;
 import com.nelumbo.api.entity.Vehiculo;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public interface VehiculoService {

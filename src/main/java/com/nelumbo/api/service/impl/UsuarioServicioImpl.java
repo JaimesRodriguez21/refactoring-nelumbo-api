@@ -1,10 +1,8 @@
 package com.nelumbo.api.service.impl;
 
-import com.nelumbo.api.dto.request.UsuarioDTO;
+import com.nelumbo.api.dto.UsuarioDTO;
 import com.nelumbo.api.entity.Rol;
 import com.nelumbo.api.entity.Usuario;
-import com.nelumbo.api.exception.AccessDeniedException;
-import com.nelumbo.api.exception.BadRequest;
 import com.nelumbo.api.exception.EmailDuplicadoException;
 import com.nelumbo.api.exception.NotFoundException;
 import com.nelumbo.api.repository.UsuarioRepository;

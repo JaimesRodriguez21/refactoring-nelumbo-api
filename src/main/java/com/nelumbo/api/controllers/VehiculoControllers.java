@@ -1,7 +1,7 @@
 package com.nelumbo.api.controllers;
 
 import com.nelumbo.api.annotations.IngressAllowed;
-import com.nelumbo.api.dto.request.VehiculoDTO;
+import com.nelumbo.api.dto.VehiculoDTO;
 import com.nelumbo.api.dto.response.UpdateResponse;
 import com.nelumbo.api.dto.response.VehiculoParqueaderoResponse;
 import com.nelumbo.api.dto.response.VehiculoResponse;

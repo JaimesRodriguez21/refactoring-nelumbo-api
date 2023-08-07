@@ -1,10 +1,8 @@
 package com.nelumbo.api.controllers;
 
 import com.nelumbo.api.annotations.IngressAllowed;
-import com.nelumbo.api.config.SecurityUtils;
-import com.nelumbo.api.dto.request.UsuarioDTO;
+import com.nelumbo.api.dto.UsuarioDTO;
 import com.nelumbo.api.dto.response.CreatedResponse;
-import com.nelumbo.api.exception.AccessDeniedException;
 import com.nelumbo.api.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

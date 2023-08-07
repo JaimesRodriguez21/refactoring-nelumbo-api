@@ -1,6 +1,6 @@
 package com.nelumbo.api.service.impl;
 
-import com.nelumbo.api.dto.request.SocioClienteDTO;
+import com.nelumbo.api.dto.SocioClienteDTO;
 import com.nelumbo.api.entity.SocioCliente;
 import com.nelumbo.api.entity.Usuario;
 import com.nelumbo.api.exception.NotFoundException;

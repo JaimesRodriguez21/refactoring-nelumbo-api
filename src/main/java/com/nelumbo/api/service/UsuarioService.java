@@ -1,6 +1,6 @@
 package com.nelumbo.api.service;
 
-import com.nelumbo.api.dto.request.UsuarioDTO;
+import com.nelumbo.api.dto.UsuarioDTO;
 import com.nelumbo.api.entity.Usuario;
 
 import java.util.List;

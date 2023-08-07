@@ -2,9 +2,9 @@ package com.nelumbo.api.controllers;
 
 
 import com.nelumbo.api.annotations.IngressAllowed;
-import com.nelumbo.api.dto.request.ParqueaderoDTO;
+import com.nelumbo.api.dto.ParqueaderoDTO;
 import com.nelumbo.api.dto.request.ParqueaderoSocio;
-import com.nelumbo.api.dto.request.VehiculoDTO;
+import com.nelumbo.api.dto.VehiculoDTO;
 import com.nelumbo.api.dto.response.CreatedResponse;
 import com.nelumbo.api.dto.response.DeleteResponse;
 import com.nelumbo.api.dto.response.ParqueaderoResponse;
@@ -13,7 +13,6 @@ import com.nelumbo.api.entity.Parqueadero;
 import com.nelumbo.api.service.ParqueaderoService;
 import com.nelumbo.api.service.VehiculoParqueaderoService;
 import jakarta.validation.Valid;
-import org.aspectj.weaver.NewConstructorTypeMunger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -71,7 +70,7 @@ public class ParqueaderoController {
             @PathVariable(value = "idParqueadero") Long idParqueadero
     ) {
         Parqueadero parqueadero = parqueaderoService.buscarParqueaderoPorId(idParqueadero);
-        ParqueaderoResponse parqueaderoResponse = ParqueaderoResponse
+        return ParqueaderoResponse
                 .builder()
                 .id(parqueadero.getId())
                 .nombre(parqueadero.getNombre())
@@ -80,7 +79,6 @@ public class ParqueaderoController {
                 .fechaRegistro(parqueadero.getFechaRegistro())
                 .fechaUpdate(parqueadero.getFechaActualizacion())
                 .build();
-        return parqueaderoResponse;
     }
 
     @IngressAllowed({"ADMIN"})

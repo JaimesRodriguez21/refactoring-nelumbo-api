@@ -1,4 +1,4 @@
-package com.nelumbo.api.dto.request;
+package com.nelumbo.api.dto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

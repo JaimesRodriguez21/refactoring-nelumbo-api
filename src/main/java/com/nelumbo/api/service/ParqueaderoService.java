@@ -1,6 +1,6 @@
 package com.nelumbo.api.service;
 
-import com.nelumbo.api.dto.request.ParqueaderoDTO;
+import com.nelumbo.api.dto.ParqueaderoDTO;
 import com.nelumbo.api.dto.request.ParqueaderoSocio;
 import com.nelumbo.api.entity.Parqueadero;
 import com.nelumbo.api.entity.Usuario;

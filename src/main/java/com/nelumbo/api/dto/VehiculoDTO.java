@@ -1,12 +1,9 @@
-package com.nelumbo.api.dto.request;
+package com.nelumbo.api.dto;
 
-import com.nelumbo.api.dto.request.ParqueaderoDTO;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-
-import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor

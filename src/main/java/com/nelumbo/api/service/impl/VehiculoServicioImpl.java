@@ -1,6 +1,6 @@
 package com.nelumbo.api.service.impl;
 
-import com.nelumbo.api.dto.request.VehiculoDTO;
+import com.nelumbo.api.dto.VehiculoDTO;
 import com.nelumbo.api.entity.Vehiculo;
 import com.nelumbo.api.exception.NotFoundException;
 import com.nelumbo.api.repository.VehiculoRepository;

@@ -1,7 +1,7 @@
 package com.nelumbo.api.service;
 
-import com.nelumbo.api.dto.request.VehiculoDTO;
-import com.nelumbo.api.dto.request.VehiculoParqueaderoDTO;
+import com.nelumbo.api.dto.VehiculoDTO;
+import com.nelumbo.api.dto.VehiculoParqueaderoDTO;
 import com.nelumbo.api.dto.response.GananciaResponse;
 import com.nelumbo.api.dto.response.VehiculoParqueaderoResponse;
 import com.nelumbo.api.dto.response.VehiculoResponse;
