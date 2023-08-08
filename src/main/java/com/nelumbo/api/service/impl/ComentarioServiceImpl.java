@@ -1,18 +1,23 @@
 package com.nelumbo.api.service.impl;
 
 import com.nelumbo.api.dto.ComentarioDTO;
+import com.nelumbo.api.dto.response.ComentarioResponse;
 import com.nelumbo.api.entity.Comentario;
+import com.nelumbo.api.entity.Parqueadero;
 import com.nelumbo.api.exception.BadRequest;
 import com.nelumbo.api.repository.ComentarioRepository;
 import com.nelumbo.api.service.ComentarioService;
+import com.nelumbo.api.service.ParqueaderoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ComentarioServiceImpl implements ComentarioService {
@@ -20,12 +25,17 @@ public class ComentarioServiceImpl implements ComentarioService {
     @Autowired
     ComentarioRepository comentarioRepository;
 
+    @Autowired
+    ParqueaderoService parqueaderoService;
+
     @Override
-    public void insertComentario(ComentarioDTO comentarioDTO) {
+    public void insertComentario(Long idParqueadero, ComentarioDTO comentarioDTO) {
+        Parqueadero parqueadero = parqueaderoService.buscarParqueaderoPorId(idParqueadero);
         Comentario comentario = Comentario
                 .builder()
                 .nombre(comentarioDTO.getNombre())
-                .comentario(comentarioDTO.getComentario())
+                .contenido(comentarioDTO.getContenido())
+                .parqueadero(parqueadero)
                 .build();
         comentarioRepository.save(comentario);
         comentarioDTO.setId(comentario.getId());
@@ -40,7 +50,7 @@ public class ComentarioServiceImpl implements ComentarioService {
         Comentario comentario = Comentario
                 .builder()
                 .nombre(comentarioDTO.getNombre())
-                .comentario(comentarioDTO.getComentario())
+                .contenido(comentarioDTO.getContenido())
                 .comentarioPadre(comentarioPadre)
                 .build();
         comentarioRepository.save(comentario);
@@ -50,7 +60,7 @@ public class ComentarioServiceImpl implements ComentarioService {
     @Override
     public void updateComentario(long idComentario, ComentarioDTO comentarioDTO) {
         Comentario comentario = searchComentario(idComentario);
-        comentario.setComentario(comentarioDTO.getComentario());
+        comentario.setContenido(comentarioDTO.getContenido());
         comentario.setNombre(comentarioDTO.getNombre());
         comentarioRepository.save(comentario);
         comentarioDTO.setId(comentario.getId());
@@ -64,36 +74,60 @@ public class ComentarioServiceImpl implements ComentarioService {
     }
 
     @Override
-    public Page<ComentarioDTO> listComentarios(int pageNumber, int pageSize) {
+    public Page<ComentarioResponse> listComentarios(int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        Page<Comentario> listComentarios = comentarioRepository.findAll(pageable);
-        return listComentarios.map((comentario) ->
-                ComentarioDTO.builder()
-                        .id(comentario.getId())
-                        .nombre(comentario.getNombre())
-                        .comentario(comentario.getComentario())
-                        .build()
-        );
+        Page<Comentario> pageComentarios = comentarioRepository.findAllByComentarioPadreIsNull(pageable);
 
+        List<ComentarioResponse> listComentarioRes = pageComentarios.stream()
+                .map(comentarioPadre -> {
+                    List<ComentarioDTO> listComentariosDto = comentarioPadre.getRespuestas().stream()
+                            .map(comentarioHijo -> ComentarioDTO.builder()
+                                    .id(comentarioHijo.getId())
+                                    .nombre(comentarioHijo.getNombre())
+                                    .contenido(comentarioHijo.getContenido())
+                                    .build())
+                            .collect(Collectors.toList());
+
+                    ComentarioResponse comentarioResponse = new ComentarioResponse();
+                    comentarioResponse.setComentarioPadre(ComentarioDTO.builder()
+                            .nombre(comentarioPadre.getNombre())
+                            .id(comentarioPadre.getId())
+                            .contenido(comentarioPadre.getContenido())
+                            .build());
+                    comentarioResponse.setComentariosHijos(listComentariosDto);
+                    return comentarioResponse;
+                })
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(listComentarioRes, pageable, pageComentarios.getTotalElements());
     }
 
-    private ComentarioDTO convertToDto(Comentario comentario) {
-        return ComentarioDTO.builder()
-                .id(comentario.getId())
-                .comentario(comentario.getComentario())
-                .nombre(comentario.getNombre())
-                .build();
-    }
 
     @Override
-    public ComentarioDTO searchComentarioPorId(long id) {
-        Comentario comentario = searchComentario(id);
-        return ComentarioDTO
+    public ComentarioResponse searchComentarioPorId(long id) {
+        Comentario comentarioPadre = searchComentario(id);
+        ComentarioResponse comentarioResponse = new ComentarioResponse();
+        List<Comentario> listComentarios = comentarioRepository.findBycomentarioPadre(comentarioPadre);
+
+
+        comentarioResponse.setComentarioPadre(ComentarioDTO
                 .builder()
-                .nombre(comentario.getNombre())
-                .id(comentario.getId())
-                .comentario(comentario.getComentario())
-                .build();
+                .nombre(comentarioPadre.getNombre())
+                .id(comentarioPadre.getId())
+                .contenido(comentarioPadre.getContenido())
+                .build());
+
+        List<ComentarioDTO> listComentariosDto = listComentarios.stream()
+                .map(comentario -> ComentarioDTO.builder()
+                        .id(comentario.getId())
+                        .nombre(comentario.getNombre())
+                        .contenido(comentario.getContenido())
+                        .build())
+                .collect(Collectors.toList());
+
+        comentarioResponse.setComentariosHijos(listComentariosDto);
+
+        return comentarioResponse;
     }
 
     @Override

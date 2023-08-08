@@ -1,6 +1,7 @@
 package com.nelumbo.api.service;
 
 import com.nelumbo.api.dto.ComentarioDTO;
+import com.nelumbo.api.dto.response.ComentarioResponse;
 import com.nelumbo.api.entity.Comentario;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -10,7 +11,7 @@ import java.util.List;
 @Service
 public interface ComentarioService {
 
-    void insertComentario(ComentarioDTO comentarioDTO);
+    void insertComentario(Long idParqueadero, ComentarioDTO comentarioDTO);
 
     void insertRespuestaAComentario(Long idComentario, ComentarioDTO comentarioDTO);
 
@@ -18,9 +19,9 @@ public interface ComentarioService {
 
     void deleteComentario(long idComentario);
 
-    Page<ComentarioDTO> listComentarios(int pageNumber, int pageSize);
+    Page<ComentarioResponse> listComentarios(int pageNumber, int pageSize);
 
-    ComentarioDTO searchComentarioPorId(long id);
+    ComentarioResponse searchComentarioPorId(long id);
 
     Comentario searchComentario(long id);
 

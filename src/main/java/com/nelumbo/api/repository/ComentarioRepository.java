@@ -1,6 +1,8 @@
 package com.nelumbo.api.repository;
 
 import com.nelumbo.api.entity.Comentario;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -13,4 +15,8 @@ public interface ComentarioRepository extends JpaRepository<Comentario, Long> {
     int countByComentarioPadre(Long idComentario);
 
     List<Comentario> findBycomentarioPadre(Comentario comentario);
+
+    Page<Comentario> findAllByComentarioPadreIsNull(Pageable pageable);
+
+
 }

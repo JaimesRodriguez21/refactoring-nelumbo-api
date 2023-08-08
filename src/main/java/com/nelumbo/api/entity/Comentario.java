@@ -6,6 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -25,12 +26,17 @@ public class Comentario {
     @Column(name = "fecharegistro")
     private LocalDateTime fechaRegistro;
 
-    @Column(name = "comentario", nullable = false)
-    private String comentario;
+    @Column(name = "contenido", nullable = false)
+    private String contenido;
 
+    @ManyToOne
+    @JoinColumn(name = "parqueadero_id")
+    private Parqueadero parqueadero;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "comentario_padre_id")
     private Comentario comentarioPadre;
 
+    @OneToMany(mappedBy = "comentarioPadre")
+    private List<Comentario> respuestas;
 }

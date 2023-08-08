@@ -1,6 +1,7 @@
 package com.nelumbo.api.controllers;
 
 import com.nelumbo.api.dto.ComentarioDTO;
+import com.nelumbo.api.dto.response.ComentarioResponse;
 import com.nelumbo.api.dto.response.CreatedResponse;
 import com.nelumbo.api.dto.response.SuccesfullResponse;
 import com.nelumbo.api.service.ComentarioService;
@@ -20,10 +21,12 @@ public class ComentarioController {
     ComentarioService comentarioService;
 
 
-    @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/parqueaderos/{idParqueadero}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public CreatedResponse insertComentario(@Valid @RequestBody ComentarioDTO comentarioDTO) {
-        comentarioService.insertComentario(comentarioDTO);
+    public CreatedResponse insertComentario(
+            @PathVariable(name = "idParqueadero") Long idParqueadero,
+            @Valid @RequestBody ComentarioDTO comentarioDTO) {
+        comentarioService.insertComentario(idParqueadero, comentarioDTO);
         return new CreatedResponse(comentarioDTO.getId());
     }
 
@@ -31,9 +34,9 @@ public class ComentarioController {
     @ResponseStatus(HttpStatus.CREATED)
     public CreatedResponse insertRespuestaAComentario(
             @PathVariable(name = "idComentario") Long idComentario,
-            @Valid @RequestBody ComentarioDTO respuesta) {
-        comentarioService.insertRespuestaAComentario(idComentario, respuesta);
-        return new CreatedResponse(respuesta.getId());
+            @Valid @RequestBody ComentarioDTO comentarioDTO) {
+        comentarioService.insertRespuestaAComentario(idComentario, comentarioDTO);
+        return new CreatedResponse(comentarioDTO.getId());
     }
 
     @PutMapping(value = "/{idComentario}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -56,7 +59,7 @@ public class ComentarioController {
 
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public Page<ComentarioDTO> getComentarios(
+    public Page<ComentarioResponse> getComentarios(
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "10") int pageSize) {
         return comentarioService.listComentarios(pageNumber, pageSize);
@@ -64,11 +67,10 @@ public class ComentarioController {
 
     @GetMapping(value = "{idComentario}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public ComentarioDTO getComentariosPorId(
+    public ComentarioResponse getComentariosPorId(
             @PathVariable(name = "idComentario") Long idComentario) {
         return comentarioService.searchComentarioPorId(idComentario);
     }
-
 
 
 }
