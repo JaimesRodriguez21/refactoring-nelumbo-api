@@ -63,6 +63,7 @@ public class ParqueaderoServicioImpl implements ParqueaderoService {
                     .id(parqueadero.getId())
                     .nombre(parqueadero.getNombre())
                     .cantidadVehiculos(parqueadero.getCantidadVehiculos())
+                    .costo(parqueadero.getCosto())
                     .build();
             listParqueaderoDto.add(parqueaderoDTO);
         }

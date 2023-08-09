@@ -43,7 +43,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"prueba2@gmail.com\",\r\n    \"password\": \"admin\"\r\n}",
+							"raw": "{\r\n    \"email\": \"prueba1@gmail.com\",\r\n    \"password\": \"admin\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -76,7 +76,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE2OTA3NjgzMzgsImV4cCI6MTY5MDc4OTkzOH0.bXm1ZFx4MU27Qx8c0C-gHQf1e0hX66a16GB0EU3UFwI",
+									"value": "{{tokenAdmin}}",
 									"type": "string"
 								}
 							]
@@ -112,7 +112,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE2OTA0OTIyOTUsImV4cCI6MTY5MDUxMzg5NX0.nzCycEo7oo8Eqzslez4GHR6Fj63p-4hpR3weh7Y1o-s",
+									"value": "{{tokenAdmin}}",
 									"type": "string"
 								}
 							]
@@ -121,7 +121,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nombre\": \"prueba\",\r\n    \"registro\": \"1235479\",\r\n    \"cantidadVehiculos\": 20\r\n}",
+							"raw": "{\r\n    \"nombre\": \"prueba\",\r\n    \"registro\": \"1235479\",\r\n    \"cantidadVehiculos\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -225,8 +225,28 @@
 				{
 					"name": "ParqueaderoPorId",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenAdmin}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "{{url}}/parqueaderos/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"parqueaderos",
+								"1"
+							]
+						}
 					},
 					"response": []
 				},
@@ -247,7 +267,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"parqueaderoId\": 11,\r\n    \"socioId\": 5\r\n}",
+							"raw": "{\r\n    \"parqueaderoId\": 1,\r\n    \"socioId\": 2\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -270,8 +290,28 @@
 				{
 					"name": "vehiculosConMasIngresos",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenAdmin}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "{{url}}/vehiculos/mas-ingresos",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"vehiculos",
+								"mas-ingresos"
+							]
+						}
 					},
 					"response": []
 				},
@@ -291,13 +331,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/parqueaderos/11/vehiculos",
+							"raw": "{{url}}/parqueaderos/1/vehiculos",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"parqueaderos",
-								"11",
+								"1",
 								"vehiculos"
 							]
 						}
@@ -355,7 +395,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"prueba@gmail.com\",\r\n    \"placa\": \"123456\",\r\n    \"mensaje\": \"tiempo Agotado\",\r\n    \"nombreParqueadero\": \"XD\"  \r\n}",
+							"raw": "{\r\n    \"email\": \"prueba@gmail.com\",\r\n    \"placa\": \"123456\",\r\n    \"mensaje\": \"tiempo Agotado\",\r\n    \"parqueaderoNombre\": \"XD\"  \r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -387,7 +427,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcnVlYmExQGdtYWlsLmNvbSIsImlhdCI6MTY5MTAwNTA3MywiZXhwIjoxNjkxMDI2NjczfQ.2bLS-nr-JnVbKixeIVqFj4oRv5gVhcCEz3AevpPJccc",
+									"value": "{{tokenSocio}}",
 									"type": "string"
 								}
 							]
@@ -450,7 +490,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcnVlYmExQGdtYWlsLmNvbSIsImlhdCI6MTY5MTAwNTA3MywiZXhwIjoxNjkxMDI2NjczfQ.2bLS-nr-JnVbKixeIVqFj4oRv5gVhcCEz3AevpPJccc",
+									"value": "{{tokenSocio}}",
 									"type": "string"
 								}
 							]
@@ -478,7 +518,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcnVlYmExQGdtYWlsLmNvbSIsImlhdCI6MTY5MTAwNTA3MywiZXhwIjoxNjkxMDI2NjczfQ.2bLS-nr-JnVbKixeIVqFj4oRv5gVhcCEz3AevpPJccc",
+									"value": "{{tokenSocio}}",
 									"type": "string"
 								}
 							]
@@ -486,13 +526,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/vehiculos/mas-ingresos",
+							"raw": "{{url}}/vehiculos/mas-ingresos-parqueadero/1",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"vehiculos",
-								"mas-ingresos"
+								"mas-ingresos-parqueadero",
+								"1"
 							]
 						}
 					},
@@ -506,7 +547,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{tokenAdmin}}",
+									"value": "{{tokenSocio}}",
 									"type": "string"
 								}
 							]
@@ -543,7 +584,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"idParqueadero\": 11,\r\n    \"placa\": \"sadasdad\"\r\n \r\n}",
+							"raw": "{\r\n    \"idParqueadero\": 1,\r\n    \"placa\": \"sadasda\"\r\n \r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -580,7 +621,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"placa\": \"12345t\"\r\n}",
+							"raw": "{\r\n    \"placa\": \"sadada\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -608,7 +649,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcnVlYmExQGdtYWlsLmNvbSIsImlhdCI6MTY5MTA3MDg0OSwiZXhwIjoxNjkxMDkyNDQ5fQ.jtiqiG99-rL8Z8TGtzxnz_GxS0dY8wHwHX6rcGtkli4",
+									"value": "{{tokenSocio}}",
 									"type": "string"
 								}
 							]
@@ -631,15 +672,173 @@
 				{
 					"name": "gananciasParqueadero",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenSocio}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/ganancias-parqueadero/1",
+							"raw": "{{url}}/socios/ganancias-parqueadero/1",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
+								"socios",
 								"ganancias-parqueadero",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comentario",
+			"item": [
+				{
+					"name": "registrarComentario",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"PepitoPerez\",\r\n    \"contenido\": \"El Parqueadero se Prueba se encuentra en Pesimas condiciones\",\r\n    \"parqueaderoId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/comentarios/parqueaderos/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"comentarios",
+								"parqueaderos",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RespuestaComentario",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"prueba_1\",\r\n    \"contenido\": \"Si, ayer Pinche mi vehiculo\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/comentarios/1/respuesta",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"comentarios",
+								"1",
+								"respuesta"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateComentario",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"update\",\r\n    \"comentario\": \"Si, ayer Pinche mi llanta\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/comentarios/2",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"comentarios",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteComentario",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/comentarios/15",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"comentarios",
+								"15"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ListadoComentarios",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/comentarios?pageSize=2",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"comentarios"
+							],
+							"query": [
+								{
+									"key": "pageSize",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ComentarioPorID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/comentarios/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"comentarios",
 								"1"
 							]
 						}
